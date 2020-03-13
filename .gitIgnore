@@ -1,0 +1,5 @@
+.build
+.swiftpm
+TypedTranslations.xcodeproj
+be.chronux.typedtranslations.xcodeproj
+.DS_Store
