@@ -22,4 +22,8 @@ extension String {
         }
         return self.replacingOccurrences(of: ".strings", with: "")
     }
+
+    func insensitiveCountOfOccurence(char: Character) -> Int {
+        self.filter { $0 == "%" }.count
+    }
 }

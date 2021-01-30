@@ -43,4 +43,12 @@ class StringCamelCaseTests: XCTestCase {
 
         XCTAssertEqual(output, "Localisable")
     }
+
+    func testInsensitiveCountOfOccurence_scenarioWithTwo() throws {
+        let text = "lorem %@ ipsum doler %@ bacon"
+
+        let count = text.insensitiveCountOfOccurence(char: "%")
+
+        XCTAssertEqual(count, 2)
+    }
 }
