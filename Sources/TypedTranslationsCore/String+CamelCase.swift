@@ -26,4 +26,11 @@ extension String {
     func insensitiveCountOfOccurence(char: Character) -> Int {
         self.filter { $0 == "%" }.count
     }
+
+    func replaceLastOccurence(of text: String, with newText: String) -> String {
+        guard let lastIndexOfReplacementString = self.lastIndex(of: "%") else { return text }
+        let range: Range = lastIndexOfReplacementString..<self.endIndex
+        let output = self.replacingOccurrences(of: text, with: newText, options: .literal, range: range)
+        return output
+    }
 }
