@@ -16,8 +16,7 @@ class TypedTranslations {
 
     typealias TranslationKeys = [Translation]
 
-    private func parseLocalizationFile(name: String) throws -> TranslationKeys {
-        let fileContent = try readFile(name: name)
+    func parseTranslationsKeys(from fileContent: String) throws -> [Translation] {
         let lines = fileContent.split(separator: "\n")
 
         var keys = TranslationKeys()
@@ -36,9 +35,23 @@ class TypedTranslations {
         return keys
     }
 
-    private func readFile(name: String) throws -> String {
+    func writeTranslationFile(translations: TranslationKeys, from stringsFileName: String) throws {
+        var codeGenerator = TranslationConstantsGenerator()
+        codeGenerator.writeHeader(stringsfileName: stringsFileName)
+        codeGenerator.writeStringExtension(tableName: getTableName(from: stringsFileName))
+        codeGenerator.writeContainingNamespaceStart()
+        for translation in translations {
+            let propertyName = translation.key.lowercasingFirst
+            codeGenerator.writeTranslationKeyLine(key: translation.key, propertyName: propertyName)
+        }
+        codeGenerator.writeContainingNamespaceEnd()
+
+        try writeFile(buffer: codeGenerator.buffer, fileName: "Translations.swift")
+    }
+
+    func readFile(name: String) throws -> String {
         let currentDirectory = FileManager.default.currentDirectoryPath
-        let filePath = "\(currentDirectory)/en.lproj/\(name)"
+        let filePath = "\(currentDirectory)/\(name)"
         return try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
     }
 
@@ -48,21 +61,10 @@ class TypedTranslations {
         try buffer.write(to: URL(fileURLWithPath: filePath), atomically: false, encoding: .utf8)
     }
 
-    func generateTranslationKeys(name: String) throws -> TranslationKeys {
-        let translations = try parseLocalizationFile(name: name)
-
-        var codeGenerator = TranslationConstantsGenerator()
-        codeGenerator.writeHeader(name: name)
-        codeGenerator.writeStringExtension(name: name)
-        codeGenerator.writeContainingNamespaceStart()
-        for translation in translations {
-            let propertyName = translation.key
-            codeGenerator.writeTranslationKeyLine(key: translation.key, propertyName: propertyName)
+    private func getTableName(from stringsFileName: String) -> String {
+        if let lastSlashIndex = stringsFileName.lastIndex(of: "/") {
+            return stringsFileName.suffix(from: lastSlashIndex).dropFirst().replacingOccurrences(of: ".strings", with: "")
         }
-        codeGenerator.writeContainingNamespaceEnd()
-
-        try writeFile(buffer: codeGenerator.buffer, fileName: "Translations.swift")
-
-        return translations
+        return stringsFileName.replacingOccurrences(of: ".strings", with: "")
     }
 }

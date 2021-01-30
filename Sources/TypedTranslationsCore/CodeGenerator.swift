@@ -9,8 +9,8 @@
 import Foundation
 
 protocol CodeGenerator {
-    mutating func writeHeader(name: String)
-    mutating func writeStringExtension(name: String)
+    mutating func writeHeader(stringsfileName: String)
+    mutating func writeStringExtension(tableName: String)
     mutating func writeContainingNamespaceStart()
     mutating func writeTranslationKeyLine(key: String, propertyName: String)
     mutating func writeContainingNamespaceEnd()
@@ -24,11 +24,11 @@ struct TranslationConstantsGenerator: CodeGenerator {
         buffer = ""
     }
 
-    mutating func writeHeader(name: String) {
+    mutating func writeHeader(stringsfileName: String) {
         buffer.append("//\n")
         buffer.append("//  Translations.swift\n")
         buffer.append("//\n")
-        buffer.append("//  Generated code that contains the available keys from \(name).strings\n")
+        buffer.append("//  Generated code that contains the available keys from \(stringsfileName)\n")
         buffer.append("//  Copyright © 2020. All rights reserved.\n")
         buffer.append("//\n")
         buffer.append("\n")
@@ -36,9 +36,9 @@ struct TranslationConstantsGenerator: CodeGenerator {
         buffer.append("\n")
     }
 
-    mutating func writeStringExtension(name: String) {
+    mutating func writeStringExtension(tableName: String) {
         buffer.append("extension String {\n")
-        buffer.append("\tfunc localized(bundle: Bundle = .main, tableName: String = \"\(name)\") -> String {\n")
+        buffer.append("\tfunc localized(bundle: Bundle = .main, tableName: String = \"\(tableName)\") -> String {\n")
         buffer.append("\t\treturn NSLocalizedString(self, tableName: tableName, bundle: bundle, value: self, comment: \"\")\n")
         buffer.append("\t}\n")
         buffer.append("}\n")

@@ -9,7 +9,18 @@ import XCTest
 @testable import TypedTranslationsCore
 
 class TypedTranslationsTests: XCTestCase {
-    func testGenerate() throws {
-        
+    func testParseTranslationsKeys() throws {
+
+        let fileContent = """
+        "cancel" = "Cancel";
+        "next" = "Next";
+        "previous" = "Previous";
+        "loading" = "Loading";
+        "close" = "Close";
+        """
+
+        let translations = try TypedTranslations().parseTranslationsKeys(from: fileContent)
+
+        XCTAssertEqual(translations.count, 5)
     }
 }

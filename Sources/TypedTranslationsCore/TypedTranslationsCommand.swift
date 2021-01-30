@@ -23,13 +23,16 @@ public struct TypedTranslationsCommand: ParsableCommand {
         helpNames: .long)
 
     @Argument(help: ArgumentHelp("the strings filename"))
-    public var stringsFileName: String = "Localizable.strings"
+    public var stringsFileName: String = "en.lproj/Localizable.strings"
 
     public init() {}
 
     public func run() throws {
-        let name = stringsFileName.replacingOccurrences(of: ".strings", with: "")
-        let translations = try TypedTranslations().generateTranslationKeys(name: name)
+
+        let typedTranslations = TypedTranslations()
+        let fileContent = try typedTranslations.readFile(name: stringsFileName)
+        let translations = try typedTranslations.parseTranslationsKeys(from: fileContent)
+        try typedTranslations.writeTranslationFile(translations: translations, from: stringsFileName)
 
         print("Done generating \(translations.count) translations.")
     }
