@@ -30,9 +30,10 @@ public struct TypedTranslationsCommand: ParsableCommand {
     public func run() throws {
 
         let typedTranslations = TypedTranslations()
-        let fileContent = try typedTranslations.readFile(name: stringsFileName)
+        let fileContent = try typedTranslations.readFile(fileName: stringsFileName)
         let translations = try typedTranslations.parseTranslationsKeys(from: fileContent)
-        try typedTranslations.writeTranslationFile(translations: translations, from: stringsFileName)
+        let generatedCode = typedTranslations.generateCodeFile(translations: translations, from: stringsFileName)
+        try typedTranslations.writeFile(buffer: generatedCode, fileName: stringsFileName)
 
         print("Done generating \(translations.count) translations.")
     }

@@ -37,7 +37,7 @@ class TypedTranslations {
         return keys
     }
 
-    func writeTranslationFile(translations: TranslationKeys, from stringsFileName: String) throws {
+    func generateCodeFile(translations: TranslationKeys, from stringsFileName: String) -> String {
         var codeGenerator = TranslationConstantsGenerator()
         codeGenerator.writeHeader(stringsfileName: stringsFileName)
         codeGenerator.writeStringExtension(tableName: getTableName(from: stringsFileName))
@@ -48,16 +48,16 @@ class TypedTranslations {
         }
         codeGenerator.writeContainingNamespaceEnd()
 
-        try writeFile(buffer: codeGenerator.buffer, fileName: "Translations.swift")
+        return codeGenerator.buffer
     }
 
-    func readFile(name: String) throws -> String {
+    func readFile(fileName: String) throws -> String {
         let currentDirectory = FileManager.default.currentDirectoryPath
-        let filePath = "\(currentDirectory)/\(name)"
+        let filePath = "\(currentDirectory)/\(fileName)"
         return try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
     }
 
-    private func writeFile(buffer: String, fileName: String) throws {
+    func writeFile(buffer: String, fileName: String) throws {
         let currentDirectory = FileManager.default.currentDirectoryPath
         let filePath = "\(currentDirectory)/\(fileName)"
         try buffer.write(to: URL(fileURLWithPath: filePath), atomically: false, encoding: .utf8)
