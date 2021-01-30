@@ -12,7 +12,7 @@ protocol CodeGenerator {
     mutating func writeHeader(stringsfileName: String)
     mutating func writeStringExtension(tableName: String)
     mutating func writeContainingNamespaceStart()
-    mutating func writeTranslationKeyLine(key: String, propertyName: String)
+    mutating func writeTranslationKeyLine(translation: TypedTranslations.Translation, propertyName: String)
     mutating func writeContainingNamespaceEnd()
 }
 
@@ -52,8 +52,9 @@ struct TranslationConstantsGenerator: CodeGenerator {
         buffer.append("\n")
     }
 
-    mutating func writeTranslationKeyLine(key: String, propertyName: String) {
-        buffer.append("\tstatic let " + propertyName + " = \"" +  key + "\"\n")
+    mutating func writeTranslationKeyLine(translation: TypedTranslations.Translation, propertyName: String) {
+        buffer.append("\t/// Base translation: \(translation.value)\n")
+        buffer.append("\tstatic let " + propertyName + " = \"" +  translation.key + "\"\n")
     }
 
     mutating func writeContainingNamespaceEnd() {

@@ -12,6 +12,7 @@ class TypedTranslations {
 
     struct Translation {
         let key: String
+        let value: String
     }
 
     typealias TranslationKeys = [Translation]
@@ -29,7 +30,8 @@ class TypedTranslations {
             let trimmedKey = lineParts[0].trimmingCharacters(in: .whitespacesAndNewlines)
             // Remove the " character because we are only interested in the key
             let key = trimmedKey.replacingOccurrences(of: "\"", with: "")
-            keys.append(Translation(key: key))
+            let value = lineParts[1].replacingOccurrences(of: "\"", with: "").dropFirst().dropLast()
+            keys.append(Translation(key: key, value: String(value)))
         }
 
         return keys
@@ -42,7 +44,7 @@ class TypedTranslations {
         codeGenerator.writeContainingNamespaceStart()
         for translation in translations {
             let propertyName = translation.key.lowercasingFirst
-            codeGenerator.writeTranslationKeyLine(key: translation.key, propertyName: propertyName)
+            codeGenerator.writeTranslationKeyLine(translation: translation, propertyName: propertyName)
         }
         codeGenerator.writeContainingNamespaceEnd()
 
