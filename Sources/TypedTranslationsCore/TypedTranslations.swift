@@ -17,6 +17,14 @@ class TypedTranslations {
 
     typealias TranslationKeys = [Translation]
 
+    /// Step 1: read the strings file and return a file content
+    func readFile(fileName: String) throws -> String {
+        let currentDirectory = FileManager.default.currentDirectoryPath
+        let filePath = "\(currentDirectory)/\(fileName)"
+        return try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
+    }
+
+    /// Step 2: parse the the translation keys and value from the given file content
     func parseTranslationsKeys(from fileContent: String) throws -> [Translation] {
         let lines = fileContent.split(separator: "\n")
 
@@ -37,10 +45,11 @@ class TypedTranslations {
         return keys
     }
 
+    /// Step 3: generate elegant swift code from the given translations
     func generateCodeFile(translations: TranslationKeys, from stringsFileName: String) -> String {
         var codeGenerator = TranslationConstantsGenerator()
         codeGenerator.writeHeader(stringsfileName: stringsFileName)
-        codeGenerator.writeStringExtension(tableName: getTableName(from: stringsFileName))
+        codeGenerator.writeStringExtension(tableName: stringsFileName.tableName)
         codeGenerator.writeContainingNamespaceStart()
         for translation in translations {
             let propertyName = translation.key.lowercasingFirst
@@ -51,22 +60,10 @@ class TypedTranslations {
         return codeGenerator.buffer
     }
 
-    func readFile(fileName: String) throws -> String {
-        let currentDirectory = FileManager.default.currentDirectoryPath
-        let filePath = "\(currentDirectory)/\(fileName)"
-        return try String(contentsOfFile: filePath, encoding: String.Encoding.utf8)
-    }
-
+    /// Step 4: write the generated code to a file
     func writeFile(buffer: String, fileName: String) throws {
         let currentDirectory = FileManager.default.currentDirectoryPath
         let filePath = "\(currentDirectory)/\(fileName)"
         try buffer.write(to: URL(fileURLWithPath: filePath), atomically: false, encoding: .utf8)
-    }
-
-    private func getTableName(from stringsFileName: String) -> String {
-        if let lastSlashIndex = stringsFileName.lastIndex(of: "/") {
-            return stringsFileName.suffix(from: lastSlashIndex).dropFirst().replacingOccurrences(of: ".strings", with: "")
-        }
-        return stringsFileName.replacingOccurrences(of: ".strings", with: "")
     }
 }

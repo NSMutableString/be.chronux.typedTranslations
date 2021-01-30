@@ -9,10 +9,17 @@ import Foundation
 
 extension String {
     var uppercasingFirst: String {
-        return prefix(1).uppercased() + dropFirst()
+        prefix(1).uppercased() + dropFirst()
     }
 
     var lowercasingFirst: String {
-        return prefix(1).lowercased() + dropFirst()
+        prefix(1).lowercased() + dropFirst()
+    }
+
+    var tableName: String {
+        if let lastSlashIndex = self.lastIndex(of: "/") {
+            return self.suffix(from: lastSlashIndex).dropFirst().replacingOccurrences(of: ".strings", with: "")
+        }
+        return self.replacingOccurrences(of: ".strings", with: "")
     }
 }

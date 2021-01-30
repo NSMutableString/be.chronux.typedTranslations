@@ -27,4 +27,20 @@ class StringCamelCaseTests: XCTestCase {
 
         XCTAssertEqual(output, "lorem Ipsum doler")
     }
+
+    func testTableName_fileNameWithoutPathProvided_correctTableNameShouldBeReturned() throws {
+        let text = "Localisable.strings"
+
+        let output = text.tableName
+
+        XCTAssertEqual(output, "Localisable")
+    }
+
+    func testTableName_fileNameWithPathProvided_correctTableNameShouldBeReturned() throws {
+        let text = "en.lproj/Localisable.strings"
+
+        let output = text.tableName
+
+        XCTAssertEqual(output, "Localisable")
+    }
 }
