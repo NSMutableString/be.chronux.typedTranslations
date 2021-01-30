@@ -22,8 +22,8 @@ public struct TypedTranslationsCommand: ParsableCommand {
         defaultSubcommand: nil,
         helpNames: .long)
 
-    @Argument(default: "Localizable.strings", help: "the strings filename")
-    public var stringsFileName: String
+    @Argument(help: ArgumentHelp("the strings filename"))
+    public var stringsFileName: String = "Localizable.strings"
 
     public init() {}
 

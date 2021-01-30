@@ -11,7 +11,7 @@ let package = Package(
         .executable(name: "TypedTranslations", targets: ["TypedTranslations"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "0.0.6")),
+        .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMajor(from: "0.3.2")),
     ],
     targets: [
         .target(
