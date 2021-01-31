@@ -53,10 +53,10 @@ class TypedTranslations {
         codeGenerator.writeContainingNamespaceStart()
         for translation in translations {
             if translation.value.insensitiveCountOfOccurence(char: "%") == 0 {
-                let propertyName = translation.key.lowercasingFirst
+                let propertyName = translation.key.lowercasingFirst.removeNotSupportedCharacters()
                 codeGenerator.writeTranslationConstant(translation: translation, propertyName: propertyName)
             } else {
-                let methodName = translation.key.lowercasingFirst
+                let methodName = translation.key.lowercasingFirst.removeNotSupportedCharacters()
                 codeGenerator.writeTranslationMethod(translation: translation, methodName: methodName)
             }
 

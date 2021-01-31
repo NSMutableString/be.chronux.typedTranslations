@@ -31,6 +31,7 @@ class TypedTranslationsTests: XCTestCase {
         "cancel" = "Cancel";
         "NEXT" = "Next";
         "Lorem_Ipsum" = "Next";
+        "Lorem%@#^&][*()Ipsum" = "Next";
         """
 
         let translation = try TypedTranslations().parseTranslationsKeys(from: fileContent)
@@ -38,6 +39,7 @@ class TypedTranslationsTests: XCTestCase {
         XCTAssertEqual(translation[0].key, "cancel")
         XCTAssertEqual(translation[1].key, "NEXT")
         XCTAssertEqual(translation[2].key, "Lorem_Ipsum")
+        XCTAssertEqual(translation[3].key, "Lorem%@#^&][*()Ipsum")
     }
 
     func testParseTranslationsKeys_valuesSpecified_shouldReturnCorrectValues() throws {

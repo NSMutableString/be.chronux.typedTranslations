@@ -26,4 +26,8 @@ extension String {
     func insensitiveCountOfOccurence(char: Character) -> Int {
         self.filter { $0 == "%" }.count
     }
+
+    func removeNotSupportedCharacters(allowedCharacterSet: CharacterSet = CharacterSet.alphanumerics) -> String {
+        self.components(separatedBy: allowedCharacterSet.inverted).joined(separator: "")
+    }
 }

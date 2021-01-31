@@ -51,4 +51,12 @@ class StringCamelCaseTests: XCTestCase {
 
         XCTAssertEqual(count, 2)
     }
+
+    func testRemoveNotSupportedCharacters_givenTextWithInvalidCharacter_shouldReturnTextWithoutInvalidCharacters() throws {
+        let text = "🍏lorem!@#$%^&*()_+{}[]ipsumë"
+
+        let result = text.removeNotSupportedCharacters()
+
+        XCTAssertEqual(result, "loremipsumë")
+    }
 }
