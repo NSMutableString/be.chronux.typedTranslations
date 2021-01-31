@@ -52,8 +52,14 @@ class TypedTranslations {
         codeGenerator.writeStringExtension(tableName: stringsFileName.tableName)
         codeGenerator.writeContainingNamespaceStart()
         for translation in translations {
-            let propertyName = translation.key.lowercasingFirst
-            codeGenerator.writeTranslationKeyLine(translation: translation, propertyName: propertyName)
+            if translation.value.insensitiveCountOfOccurence(char: "%") == 0 {
+                let propertyName = translation.key.lowercasingFirst
+                codeGenerator.writeTranslationConstant(translation: translation, propertyName: propertyName)
+            } else {
+                let methodName = translation.key.lowercasingFirst
+                codeGenerator.writeTranslationMethod(translation: translation, methodName: methodName)
+            }
+
         }
         codeGenerator.writeContainingNamespaceEnd()
 

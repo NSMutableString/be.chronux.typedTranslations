@@ -12,7 +12,8 @@ protocol CodeGenerator {
     mutating func writeHeader(stringsfileName: String)
     mutating func writeStringExtension(tableName: String)
     mutating func writeContainingNamespaceStart()
-    mutating func writeTranslationKeyLine(translation: TypedTranslations.Translation, propertyName: String)
+    mutating func writeTranslationConstant(translation: TypedTranslations.Translation, propertyName: String)
+    mutating func writeTranslationMethod(translation: TypedTranslations.Translation, methodName: String)
     mutating func writeContainingNamespaceEnd()
 }
 
@@ -43,7 +44,7 @@ struct TranslationConstantsGenerator: CodeGenerator {
             \tfunc localized(bundle: Bundle = .main, tableName: String = \"\(tableName)\") -> String {
             \t\tNSLocalizedString(self, tableName: tableName, bundle: bundle, value: self, comment: \"\")
             \t}
-            
+
             \tfunc localizedWithParameters(bundle: Bundle = .main, tableName: String = \"\(tableName)\", args: CVarArg...) -> String {
             \t\tString.localizedStringWithFormat(self.localized(bundle: bundle, tableName: tableName), args)
             \t}
@@ -60,9 +61,16 @@ struct TranslationConstantsGenerator: CodeGenerator {
         buffer.append("\n")
     }
 
-    mutating func writeTranslationKeyLine(translation: TypedTranslations.Translation, propertyName: String) {
+    mutating func writeTranslationConstant(translation: TypedTranslations.Translation, propertyName: String) {
         buffer.append("\t/// Base translation: \(translation.value)\n")
         buffer.append("\tstatic let " + propertyName + " = \"" +  translation.key + "\".localized()\n")
+    }
+
+    mutating func writeTranslationMethod(translation: TypedTranslations.Translation, methodName: String) {
+        buffer.append("\t/// Base translation: \(translation.value)\n")
+        buffer.append("\tstatic func " + methodName + "(args: CVarArg...) -> String {\n")
+        buffer.append("\t\t\"\(translation.key)\".localizedWithParameters(args: args)\n")
+        buffer.append("\t}\n")
     }
 
     mutating func writeContainingNamespaceEnd() {

@@ -54,24 +54,4 @@ class TypedTranslationsTests: XCTestCase {
         XCTAssertEqual(translation[1].value, "Next button")
         XCTAssertEqual(translation[2].value, "Doler %@ ipsum")
     }
-
-    func testReplaceLastOccurence_replacementTextGiven_shouldReturnTextWithReplacement() {
-        let text = "Lorem %@ ipsum %@ doler."
-
-        var output = text.replaceLastOccurence(of: "%@", with: "\\(parameter2)")
-
-        XCTAssertEqual(output, "Lorem %@ ipsum \\(parameter2) doler.")
-
-        output = output.replaceLastOccurence(of: "%@", with: "\\(parameter1)")
-
-        XCTAssertEqual(output, "Lorem \\(parameter1) ipsum \\(parameter2) doler.")
-    }
-
-    func testReplaceLastOccurence_noReplacementTextGiven_shouldReturnSameText() {
-        let text = "Lorem ipsum % doler."
-
-        let output = text.replaceLastOccurence(of: "%@", with: "\\(parameter2)")
-
-        XCTAssertEqual(output, "Lorem ipsum % doler.")
-    }
 }
