@@ -37,12 +37,20 @@ struct TranslationConstantsGenerator: CodeGenerator {
     }
 
     mutating func writeStringExtension(tableName: String) {
-        buffer.append("extension String {\n")
-        buffer.append("\tfunc localized(bundle: Bundle = .main, tableName: String = \"\(tableName)\") -> String {\n")
-        buffer.append("\t\treturn NSLocalizedString(self, tableName: tableName, bundle: bundle, value: self, comment: \"\")\n")
-        buffer.append("\t}\n")
-        buffer.append("}\n")
-        buffer.append("\n")
+        buffer.append(
+            """
+            extension String {
+            \tfunc localized(bundle: Bundle = .main, tableName: String = \"\(tableName)\") -> String {
+            \t\tNSLocalizedString(self, tableName: tableName, bundle: bundle, value: self, comment: \"\")
+            \t}
+            
+            \tfunc localizedWithParameters(bundle: Bundle = .main, tableName: String = \"\(tableName)\", args: CVarArg...) -> String {
+            \t\tString.localizedStringWithFormat(self.localized(bundle: bundle, tableName: tableName), args)
+            \t}
+            }
+            \n
+            """
+        )
     }
 
     mutating func writeContainingNamespaceStart() {
