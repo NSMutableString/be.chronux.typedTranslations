@@ -26,7 +26,7 @@ struct TranslationConstantsGenerator: CodeGenerator {
 
     mutating func writeHeader(stringsfileName: String) {
         buffer.append("//\n")
-        buffer.append("//  Translations.swift\n")
+        buffer.append("//  Localizations.swift\n")
         buffer.append("//\n")
         buffer.append("//  Generated code that contains the available keys from \(stringsfileName)\n")
         buffer.append("//  Copyright © 2020. All rights reserved.\n")
@@ -46,7 +46,7 @@ struct TranslationConstantsGenerator: CodeGenerator {
     }
 
     mutating func writeContainingNamespaceStart() {
-        buffer.append("struct Translations {\n")
+        buffer.append("struct Localizations {\n")
         buffer.append("\n")
         buffer.append("\tprivate init() {}\n")
         buffer.append("\n")
@@ -54,7 +54,7 @@ struct TranslationConstantsGenerator: CodeGenerator {
 
     mutating func writeTranslationKeyLine(translation: TypedTranslations.Translation, propertyName: String) {
         buffer.append("\t/// Base translation: \(translation.value)\n")
-        buffer.append("\tstatic let " + propertyName + " = \"" +  translation.key + "\"\n")
+        buffer.append("\tstatic let " + propertyName + " = \"" +  translation.key + "\".localized()\n")
     }
 
     mutating func writeContainingNamespaceEnd() {

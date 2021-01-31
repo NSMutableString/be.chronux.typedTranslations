@@ -33,7 +33,7 @@ public struct TypedTranslationsCommand: ParsableCommand {
         let fileContent = try typedTranslations.readFile(fileName: stringsFileName)
         let translations = try typedTranslations.parseTranslationsKeys(from: fileContent)
         let generatedCode = typedTranslations.generateCodeFile(translations: translations, from: stringsFileName)
-        try typedTranslations.writeFile(buffer: generatedCode, fileName: stringsFileName)
+        try typedTranslations.writeFile(buffer: generatedCode, fileName: "Localizations.swift")
 
         print("Done generating \(translations.count) translations.")
     }
