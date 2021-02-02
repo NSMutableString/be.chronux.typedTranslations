@@ -30,15 +30,15 @@ class TypedTranslations {
 
         var keys = TranslationKeys()
         for line in lines {
-            // Skip the lines with comments
-            guard !line.starts(with: "/") else { continue }
+            // Skip the lines with comments and not starting with "
+            guard !line.starts(with: "/") && line.starts(with: "\"") else { continue }
             let lineParts = line.split(separator: "=")
-            // Make sure we have two parts (key and value)
-            guard lineParts.count == 2 else { continue }
+            // Make sure we have at least two parts (key and value)
+            guard lineParts.count >= 2 else { continue }
             let trimmedKey = lineParts[0].trimmingCharacters(in: .whitespacesAndNewlines)
             // Remove the " character because we are only interested in the key
-            let key = trimmedKey.replacingOccurrences(of: "\"", with: "")
-            let value = lineParts[1].replacingOccurrences(of: "\"", with: "").dropFirst().dropLast()
+            let key = trimmedKey.removeDoubleQuotes()
+            let value = lineParts.dropFirst().joined(separator: "=").removeDoubleQuotes().dropFirst().dropLast()
             keys.append(Translation(key: key, value: String(value)))
         }
 

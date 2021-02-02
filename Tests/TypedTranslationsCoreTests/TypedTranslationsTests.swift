@@ -48,6 +48,7 @@ class TypedTranslationsTests: XCTestCase {
         "cancel" = "Cancel";
         "next" = "Next button";
         "Lorem_Ipsum" = "Doler %@ ipsum";
+        "Lorem_Ipsum" = "http://www.doler.com/bacon=xxx";
         """
 
         let translation = try TypedTranslations().parseTranslationsKeys(from: fileContent)
@@ -55,5 +56,20 @@ class TypedTranslationsTests: XCTestCase {
         XCTAssertEqual(translation[0].value, "Cancel")
         XCTAssertEqual(translation[1].value, "Next button")
         XCTAssertEqual(translation[2].value, "Doler %@ ipsum")
+        XCTAssertEqual(translation[3].value, "http://www.doler.com/bacon=xxx")
+    }
+
+    func testParseTranslationsKeys_commentsSpecified_shouldNotTakeCommentsIntoAccount() throws {
+
+        let fileContent = """
+        /* information about next button */
+        "next" = "Next button";
+        // other line to skip
+        """
+
+        let translation = try TypedTranslations().parseTranslationsKeys(from: fileContent)
+
+        XCTAssertEqual(translation.count, 1)
+        XCTAssertEqual(translation[0].key, "next")
     }
 }

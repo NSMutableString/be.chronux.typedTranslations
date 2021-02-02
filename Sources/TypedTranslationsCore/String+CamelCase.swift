@@ -30,4 +30,8 @@ extension String {
     func removeNotSupportedCharacters(allowedCharacterSet: CharacterSet = CharacterSet.alphanumerics) -> String {
         self.components(separatedBy: allowedCharacterSet.inverted).joined(separator: "")
     }
+
+    func removeDoubleQuotes() -> String {
+        self.replacingOccurrences(of: "\"", with: "")
+    }
 }

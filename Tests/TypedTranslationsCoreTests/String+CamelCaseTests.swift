@@ -59,4 +59,12 @@ class StringCamelCaseTests: XCTestCase {
 
         XCTAssertEqual(result, "loremipsumë")
     }
+
+    func testRemoveDoubleQuotes_givenTextWithDoubleQuotes_shouldReturnDoubleQuotesFromText() throws {
+        let text = "\"Lorem\""
+
+        let result = text.removeDoubleQuotes()
+
+        XCTAssertEqual(result, "Lorem")
+    }
 }
