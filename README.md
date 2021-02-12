@@ -1,5 +1,6 @@
 ![Swift](https://github.com/NSMutableString/be.chronux.typedTranslations/workflows/Swift/badge.svg)
 [![Swift 5.1](https://img.shields.io/badge/Swift-5.1-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![Swift Package Manager](https://rawgit.com/jlyonsmith/artwork/master/SwiftPackageManager/swiftpackagemanager-compatible.svg)](https://swift.org/package-manager/)
 
 ## Typed Translations
 
